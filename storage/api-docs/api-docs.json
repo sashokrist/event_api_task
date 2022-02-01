@@ -1,0 +1,336 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Event API",
+        "version": "0.1"
+    },
+    "paths": {
+        "/api/meets": {
+            "get": {
+                "tags": [
+                    "meets"
+                ],
+                "summary": "List all  meets",
+                "operationId": "deleteMeet",
+                "responses": {
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/api/meet": {
+            "post": {
+                "tags": [
+                    "meet"
+                ],
+                "summary": "Add a new meet  to calendar",
+                "operationId": "addMeet",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "name values",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "Interview meeting",
+                            "enum": [
+                                "Interview meeting2",
+                                "Interview meeting3"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "room",
+                        "in": "query",
+                        "description": "room values",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "room 1",
+                            "enum": [
+                                "room 1",
+                                "room 2",
+                                "room 3"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "start_time",
+                        "in": "query",
+                        "description": "start time ex: 2022-02-01 07:16:45 ",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "2022-02-01 07:16:45",
+                            "enum": [
+                                "2022-02-02 07:00:00",
+                                "2022-11-01 12:00:00",
+                                "2021-04-01 07:00:45"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "end_time",
+                        "in": "query",
+                        "description": "end time ex: 2022-02-01 07:16:45 ",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "2022-02-01 07:16:45",
+                            "enum": [
+                                "2022-02-02 07:00:00",
+                                "2022-11-01 12:00:00",
+                                "2021-04-01 07:00:45"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/api/meet/{meet}": {
+            "post": {
+                "tags": [
+                    "meet"
+                ],
+                "summary": "Update a meet",
+                "operationId": "updateMeet",
+                "parameters": [
+                    {
+                        "name": "meet",
+                        "in": "path",
+                        "description": "Numeric ID of the meet to update",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1",
+                            "enum": [
+                                "2",
+                                "3"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "name values",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "Interview meeting",
+                            "enum": [
+                                "Interview meeting2",
+                                "Interview meeting3"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "room",
+                        "in": "query",
+                        "description": "room values",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "room 1",
+                            "enum": [
+                                "room 1",
+                                "room 2",
+                                "room 3"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "start_time",
+                        "in": "query",
+                        "description": "start time ex: 2022-02-01 07:16:45 ",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "2022-02-01 07:16:45",
+                            "enum": [
+                                "2022-02-02 07:00:00",
+                                "2022-11-01 12:00:00",
+                                "2021-04-01 07:00:45"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "end_time",
+                        "in": "query",
+                        "description": "end time ex: 2022-02-01 07:16:45 ",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "2022-02-01 07:16:45",
+                            "enum": [
+                                "2022-02-02 07:00:00",
+                                "2022-11-01 12:00:00",
+                                "2021-04-01 07:00:45"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "meet"
+                ],
+                "summary": "Delete a meet",
+                "operationId": "deleteMeet",
+                "parameters": [
+                    {
+                        "name": "meet",
+                        "in": "path",
+                        "description": "Numeric ID of the meet to get",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/api/meets-user": {
+            "get": {
+                "tags": [
+                    "meets-user"
+                ],
+                "summary": "List all  meets",
+                "operationId": "userMeets",
+                "responses": {
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "register"
+                ],
+                "summary": "Login user",
+                "operationId": "createUser",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "email values",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "admin@admin.com"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "password - 11111111",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "11111111"
+                        }
+                    }
+                ],
+                "responses": {
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "register"
+                ],
+                "summary": "Create new user",
+                "operationId": "createUser",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "name values",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "Admin"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "email values",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "admin@admin.com"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "password - 11111111",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "11111111"
+                        }
+                    },
+                    {
+                        "name": "password_confirmation",
+                        "in": "query",
+                        "description": "password - 11111111",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "11111111"
+                        }
+                    }
+                ],
+                "responses": {
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        }
+    },
+    "security": [
+        []
+    ]
+}
