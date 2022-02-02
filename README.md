@@ -24,7 +24,7 @@ For simplicity you could assume there is only one meeting owner (user).
 Bonus points:
 - add basic authentication - Basic auth is implemented, api_token is added to Users table, overwrite RegistersUsers.php/registered() and AuthenticatesUsers.php/ login(), created function in User.php/generateToken(), unfortunately it does not work user is always unauthenticated.
 - use Swagger for specification - DONE
-- ![img_7.png](img_7.png)
+- ![img_8.png](img_8.png)
 - to generate documentation: php artisan l5-swagger:generate to run: http://127.0.0.1:8000/api/documentation
 - add update and delete meeting methods - DONE
 
