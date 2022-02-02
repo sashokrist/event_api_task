@@ -222,8 +222,22 @@
                 "tags": [
                     "meets-user"
                 ],
-                "summary": "List all  meets",
+                "summary": "List all user  meets",
                 "operationId": "userMeets",
+                "responses": {
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/api/meets-user-today": {
+            "get": {
+                "tags": [
+                    "meets-user-today"
+                ],
+                "summary": "List all today user meets",
+                "operationId": "todayUserMeets",
                 "responses": {
                     "405": {
                         "description": "Invalid input"

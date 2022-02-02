@@ -36,4 +36,5 @@ Route::post('meet', [MeetController::class, 'store']);
 Route::post('meet/{meet}', [MeetController::class, 'update']);
 Route::delete('meet/{meet}', [MeetController::class, 'delete']);
 Route::get('meets-user', [MeetController::class, 'userMeets']);
+Route::get('meets-user-today', [MeetController::class, 'todayUserMeets']);
 //});

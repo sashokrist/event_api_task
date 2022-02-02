@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Meet;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Carbon;
+
 use function dd;
 use function response;
 
@@ -32,6 +34,20 @@ class MeetController extends Controller
     public function index()
     {
         return Meet::all();
+    }
+
+    private function isBetween()
+    {
+        $timeToReserve = Carbon::createFromTimestamp(request()->start_time);
+        $allDates = Meet::all();
+        foreach ($allDates as $item) {
+            $start = Carbon::createFromTimestamp($item->start_time);
+            $end = Carbon::createFromTimestamp($item->end_time);
+            if ($timeToReserve->between($start, $end, true)) {
+                dd('Your time is In Between');
+            }
+        }
+        return true;
     }
 
     /**
@@ -98,17 +114,10 @@ class MeetController extends Controller
      */
     public function store(Request $request)
     {
-        $start = $request->start_time;
-        $room = $request->room;
-
-        $meets = Meet::all();
-        foreach ($meets as $item){
-            if ($item->room === $room && $item->start_time === $start){
-                dd('This room is occupied, please choose another time or room');
-            }
+        if ($this->isBetween()){
+            $meet = Meet::create($request->all());
         }
-        $meet = Meet::create($request->all());
-        return response()->json($meet, 201);
+            return response()->json($meet, 201);
     }
 
     /**
@@ -188,8 +197,10 @@ class MeetController extends Controller
      */
     public function update(Request $request, Meet $meet)
     {
-        $meet->update($request->all());
-        return response()->json($meet, 200);
+        if ($this->isBetween()) {
+            $meet->update($request->all());
+        }
+            return response()->json($meet, 200);
     }
 
     /**
@@ -247,6 +258,15 @@ class MeetController extends Controller
     public function userMeets()
     {
         $meets = Meet::where('user_id', $user_id = 1)->get();
+        return response()->json($meets, 200);
+    }
+
+    public function todayUserMeets()
+    {
+        $meets = DB::table('meets')
+            ->where('user_id', 1)
+            ->whereDate('start_time', now())
+            ->get();
         return response()->json($meets, 200);
     }
 }
