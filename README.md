@@ -41,7 +41,7 @@ How to run it?
 
 5. composer global require "laravel/installer=~1.1"
 
-6. git clone https://github.com/Looming-Tech/laravel-api-task.git
+6. git clone git@github.com:sashokrist/event_api_task.git
 
 7. cd laravel-api-task
 
