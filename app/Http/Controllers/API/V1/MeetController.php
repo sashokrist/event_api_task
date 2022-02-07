@@ -265,12 +265,9 @@ class MeetController extends Controller
             if ($start <= $timeToRecerve && $timeToRecerve <= $end && $m_date === $meet_date) {
                 dd('this time is occupied, please select another time');
             }
-
         }
         $meet->update($request->all());
-       // dd($meet->id);
         $room = Room::where('meet_id', $meet->id)->first();
-       // dd($room);
         $room->room_name = $request->room_name;
         $room->meet_date = $request->meet_date;
         $room->start = $request->start;
@@ -333,7 +330,6 @@ class MeetController extends Controller
      */
     public function userMeets()
     {
-       // $meets = Meet::where('user_id', $user_id = 1)->get();
         $meets = User::with('meet')->where('id', 1)->get();
         return response()->json($meets, 200);
     }
@@ -370,9 +366,9 @@ class MeetController extends Controller
     {
         $checkDate = $request->meet_date;
         $meets = Meet::with('room')->where('user_id', 1)->get();
-        foreach($meets as $item){
-           $isAvailable = $item->room->meet_date;
-            if ($checkDate === $isAvailable){
+        foreach ($meets as $item) {
+            $isAvailable = $item->room->meet_date;
+            if ($checkDate === $isAvailable) {
                 return response()->json($meets, 200);
             }
         }
