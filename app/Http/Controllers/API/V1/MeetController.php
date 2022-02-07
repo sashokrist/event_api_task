@@ -255,12 +255,14 @@ class MeetController extends Controller
         }
 
         $timeToRecerve = $request->start;
+        $meet_date = $request->meet_date;
         $allRooms = Room::all();
 
         foreach ($allRooms as $item) {
+            $m_date = $item->meet_date;
             $start = $item->start;
             $end = $item->end;
-            if ($start <= $timeToRecerve && $timeToRecerve <= $end) {
+            if ($start <= $timeToRecerve && $timeToRecerve <= $end && $m_date === $meet_date) {
                 dd('this time is occupied, please select another time');
             }
 
