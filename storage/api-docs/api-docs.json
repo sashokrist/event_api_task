@@ -11,7 +11,7 @@
                     "meets"
                 ],
                 "summary": "List all  meets",
-                "operationId": "deleteMeet",
+                "operationId": "allMeets",
                 "responses": {
                     "405": {
                         "description": "Invalid input"
@@ -43,9 +43,9 @@
                         }
                     },
                     {
-                        "name": "room",
+                        "name": "room_name",
                         "in": "query",
-                        "description": "room values",
+                        "description": "room_name values",
                         "required": true,
                         "explode": true,
                         "schema": {
@@ -59,34 +59,47 @@
                         }
                     },
                     {
-                        "name": "start_time",
+                        "name": "meet_date",
                         "in": "query",
-                        "description": "start time ex: 2022-02-01 07:16:45 ",
+                        "description": "meet date ex: 2022-02-01",
                         "required": true,
                         "explode": true,
                         "schema": {
                             "type": "string",
-                            "default": "2022-02-01 07:16:45",
+                            "default": "2022-02-01",
                             "enum": [
-                                "2022-02-02 07:00:00",
-                                "2022-11-01 12:00:00",
-                                "2021-04-01 07:00:45"
+                                "2022-01-01",
+                                "2021-04-01"
                             ]
                         }
                     },
                     {
-                        "name": "end_time",
+                        "name": "start",
                         "in": "query",
-                        "description": "end time ex: 2022-02-01 07:16:45 ",
+                        "description": "start time ex: 07:00:00 ",
                         "required": true,
                         "explode": true,
                         "schema": {
                             "type": "string",
-                            "default": "2022-02-01 07:16:45",
+                            "default": "08:00:00",
                             "enum": [
-                                "2022-02-02 07:00:00",
-                                "2022-11-01 12:00:00",
-                                "2021-04-01 07:00:45"
+                                "10:00:00",
+                                "12:00:45"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time ex: 08:00:00 ",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "09:00:00",
+                            "enum": [
+                                "11:00:00",
+                                "13:00:45"
                             ]
                         }
                     }
@@ -114,11 +127,7 @@
                         "explode": true,
                         "schema": {
                             "type": "integer",
-                            "default": "1",
-                            "enum": [
-                                "2",
-                                "3"
-                            ]
+                            "default": "1"
                         }
                     },
                     {
@@ -137,9 +146,9 @@
                         }
                     },
                     {
-                        "name": "room",
+                        "name": "room_name",
                         "in": "query",
-                        "description": "room values",
+                        "description": "room_name values",
                         "required": true,
                         "explode": true,
                         "schema": {
@@ -153,34 +162,47 @@
                         }
                     },
                     {
-                        "name": "start_time",
+                        "name": "meet_date",
                         "in": "query",
-                        "description": "start time ex: 2022-02-01 07:16:45 ",
+                        "description": "meet date ex: 2022-02-01",
                         "required": true,
                         "explode": true,
                         "schema": {
                             "type": "string",
-                            "default": "2022-02-01 07:16:45",
+                            "default": "2022-02-01",
                             "enum": [
-                                "2022-02-02 07:00:00",
-                                "2022-11-01 12:00:00",
-                                "2021-04-01 07:00:45"
+                                "2022-01-01",
+                                "2021-04-01"
                             ]
                         }
                     },
                     {
-                        "name": "end_time",
+                        "name": "start",
                         "in": "query",
-                        "description": "end time ex: 2022-02-01 07:16:45 ",
+                        "description": "start time ex: 07:00:00 ",
                         "required": true,
                         "explode": true,
                         "schema": {
                             "type": "string",
-                            "default": "2022-02-01 07:16:45",
+                            "default": "08:00:00",
                             "enum": [
-                                "2022-02-02 07:00:00",
-                                "2022-11-01 12:00:00",
-                                "2021-04-01 07:00:45"
+                                "10:00:00",
+                                "12:00:45"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time ex: 08:00:00 ",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "09:00:00",
+                            "enum": [
+                                "11:00:00",
+                                "13:00:45"
                             ]
                         }
                     }
@@ -222,7 +244,7 @@
                 "tags": [
                     "meets-user"
                 ],
-                "summary": "List all user  meets",
+                "summary": "List all  user meets",
                 "operationId": "userMeets",
                 "responses": {
                     "405": {
@@ -231,13 +253,30 @@
                 }
             }
         },
-        "/api/meets-user-today": {
-            "get": {
+        "/meets-user-today": {
+            "post": {
                 "tags": [
-                    "meets-user-today"
+                    "meets-user"
                 ],
-                "summary": "List all today user meets",
-                "operationId": "todayUserMeets",
+                "summary": "List all  user meets for today",
+                "operationId": "userTodayMeets",
+                "parameters": [
+                    {
+                        "name": "meet_date",
+                        "in": "query",
+                        "description": "meet date ex: 2022-02-01",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "2022-02-01",
+                            "enum": [
+                                "2022-01-01",
+                                "2021-04-01"
+                            ]
+                        }
+                    }
+                ],
                 "responses": {
                     "405": {
                         "description": "Invalid input"

@@ -4,9 +4,14 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Meet;
+use App\Models\Room;
+use App\Models\User;
+use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 
-use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 use function dd;
 use function response;
@@ -19,7 +24,7 @@ class MeetController extends Controller
      * @OA\Get (
      *     path="/api/meets",
      *     tags={"meets"},
-     *     operationId="deleteMeet",
+     *     operationId="allMeets",
      *
      *
      *
@@ -33,21 +38,7 @@ class MeetController extends Controller
      */
     public function index()
     {
-        return Meet::all();
-    }
-
-    private function isBetween()
-    {
-        $timeToReserve = Carbon::createFromTimestamp(request()->start_time);
-        $allDates = Meet::all();
-        foreach ($allDates as $item) {
-            $start = Carbon::createFromTimestamp($item->start_time);
-            $end = Carbon::createFromTimestamp($item->end_time);
-            if ($timeToReserve->between($start, $end, true)) {
-                dd('Your time is In Between');
-            }
-        }
-        return true;
+        return Meet::with('room')->get();
     }
 
     /**
@@ -70,9 +61,9 @@ class MeetController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         name="room",
+     *         name="room_name",
      *         in="query",
-     *         description="room values",
+     *         description="room_name values",
      *         required=true,
      *         explode=true,
      *         @OA\Schema(
@@ -82,27 +73,39 @@ class MeetController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         name="start_time",
+     *         name="meet_date",
      *         in="query",
-     *         description="start time ex: 2022-02-01 07:16:45 ",
+     *         description="meet date ex: 2022-02-01",
      *         required=true,
      *         explode=true,
      *         @OA\Schema(
-     *             default="2022-02-01 07:16:45",
+     *             default="2022-02-01",
      *             type="string",
-     *             enum = {"2022-02-02 07:00:00", "2022-11-01 12:00:00", "2021-04-01 07:00:45"},
+     *             enum = {"2022-01-01", "2021-04-01"},
      *         )
      *     ),
      *     @OA\Parameter(
-     *         name="end_time",
+     *         name="start",
      *         in="query",
-     *         description="end time ex: 2022-02-01 07:16:45 ",
+     *         description="start time ex: 07:00:00 ",
      *         required=true,
      *         explode=true,
      *         @OA\Schema(
-     *             default="2022-02-01 07:16:45",
+     *             default="08:00:00",
      *             type="string",
-     *             enum = {"2022-02-02 07:00:00", "2022-11-01 12:00:00", "2021-04-01 07:00:45"},
+     *             enum = {"10:00:00", "12:00:45"},
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="end",
+     *         in="query",
+     *         description="end time ex: 08:00:00 ",
+     *         required=true,
+     *         explode=true,
+     *         @OA\Schema(
+     *             default="09:00:00",
+     *             type="string",
+     *             enum = {"11:00:00", "13:00:45"},
      *         )
      *     ),
      *     @OA\Response(
@@ -114,10 +117,40 @@ class MeetController extends Controller
      */
     public function store(Request $request)
     {
-        if ($this->isBetween()){
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:255',
+            'room_name' => 'required|max:255',
+            'start' => 'required',
+            'end' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $timeToRecerve = $request->start;
+        $allRooms = Room::all();
+
+        foreach ($allRooms as $item) {
+            $start = $item->start;
+            $end = $item->end;
+            if ($start <= $timeToRecerve && $timeToRecerve <= $end) {
+                dd('this time is occupied, please select another time');
+            }
+
             $meet = Meet::create($request->all());
         }
-            return response()->json($meet, 201);
+
+        $room = new Room();
+        $room->meet_id = $meet->id;
+        $room->room_name = $request->room_name;
+        $room->meet_date = $request->meet_date;
+        $room->start = $request->start;
+        $room->end = $request->end;
+        $room->save();
+        $meet = Meet::with('room')->where('id', $meet->id)->orderByDesc('created_at')->first();
+
+        return response()->json($meet, 201);
     }
 
     /**
@@ -136,7 +169,6 @@ class MeetController extends Controller
      *         @OA\Schema(
      *             default="1",
      *             type="integer",
-     *             enum = {"2", "3"}
      *         )
      *     ),
      *     @OA\Parameter(
@@ -152,9 +184,9 @@ class MeetController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         name="room",
+     *         name="room_name",
      *         in="query",
-     *         description="room values",
+     *         description="room_name values",
      *         required=true,
      *         explode=true,
      *         @OA\Schema(
@@ -164,27 +196,39 @@ class MeetController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         name="start_time",
+     *         name="meet_date",
      *         in="query",
-     *         description="start time ex: 2022-02-01 07:16:45 ",
+     *         description="meet date ex: 2022-02-01",
      *         required=true,
      *         explode=true,
      *         @OA\Schema(
-     *             default="2022-02-01 07:16:45",
+     *             default="2022-02-01",
      *             type="string",
-     *             enum = {"2022-02-02 07:00:00", "2022-11-01 12:00:00", "2021-04-01 07:00:45"},
+     *             enum = {"2022-01-01", "2021-04-01"},
      *         )
      *     ),
      *     @OA\Parameter(
-     *         name="end_time",
+     *         name="start",
      *         in="query",
-     *         description="end time ex: 2022-02-01 07:16:45 ",
+     *         description="start time ex: 07:00:00 ",
      *         required=true,
      *         explode=true,
      *         @OA\Schema(
-     *             default="2022-02-01 07:16:45",
+     *             default="08:00:00",
      *             type="string",
-     *             enum = {"2022-02-02 07:00:00", "2022-11-01 12:00:00", "2021-04-01 07:00:45"},
+     *             enum = {"10:00:00", "12:00:45"},
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="end",
+     *         in="query",
+     *         description="end time ex: 08:00:00 ",
+     *         required=true,
+     *         explode=true,
+     *         @OA\Schema(
+     *             default="09:00:00",
+     *             type="string",
+     *             enum = {"11:00:00", "13:00:45"},
      *         )
      *     ),
      *     @OA\Response(
@@ -197,10 +241,38 @@ class MeetController extends Controller
      */
     public function update(Request $request, Meet $meet)
     {
-        if ($this->isBetween()) {
-            $meet->update($request->all());
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:255',
+            'room_name' => 'required|max:255',
+            'start' => 'required',
+            'end' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
         }
-            return response()->json($meet, 200);
+
+        $timeToRecerve = $request->start;
+        $allRooms = Room::all();
+
+        foreach ($allRooms as $item) {
+            $start = $item->start;
+            $end = $item->end;
+            if ($start <= $timeToRecerve && $timeToRecerve <= $end) {
+                dd('this time is occupied, please select another time');
+            }
+
+        }
+        $meet->update($request->all());
+       // dd($meet->id);
+        $room = Room::where('meet_id', $meet->id)->first();
+       // dd($room);
+        $room->room_name = $request->room_name;
+        $room->meet_date = $request->meet_date;
+        $room->start = $request->start;
+        $room->end = $request->end;
+        $room->save();
+        return response()->json($meet, 200);
     }
 
     /**
@@ -238,7 +310,7 @@ class MeetController extends Controller
     }
 
     /**
-     * List all  meets
+     * List all  user meets
      *
      * @OA\Get (
      *     path="/api/meets-user",
@@ -257,16 +329,49 @@ class MeetController extends Controller
      */
     public function userMeets()
     {
-        $meets = Meet::where('user_id', $user_id = 1)->get();
+       // $meets = Meet::where('user_id', $user_id = 1)->get();
+        $meets = User::with('meet')->where('id', 1)->get();
         return response()->json($meets, 200);
     }
 
-    public function todayUserMeets()
+    /**
+     * List all  user meets for today
+     *
+     * @OA\Post (
+     *     path="/meets-user-today",
+     *     tags={"meets-user"},
+     *     operationId="userTodayMeets",
+     *
+     *     @OA\Parameter(
+     *         name="meet_date",
+     *         in="query",
+     *         description="meet date ex: 2022-02-01",
+     *         required=true,
+     *         explode=true,
+     *         @OA\Schema(
+     *             default="2022-02-01",
+     *             type="string",
+     *             enum = {"2022-01-01", "2021-04-01"},
+     *         )
+     *     ),
+     *
+     *
+     *     @OA\Response(
+     *         response=405,
+     *         description="Invalid input"
+     *     ),
+     * )
+     */
+    public function todayUserMeets(Request $request)
     {
-        $meets = DB::table('meets')
-            ->where('user_id', 1)
-            ->whereDate('start_time', now())
-            ->get();
-        return response()->json($meets, 200);
+        $checkDate = $request->meet_date;
+        $meets = Meet::with('room')->where('user_id', 1)->get();
+        foreach($meets as $item){
+           $isAvailable = $item->room->meet_date;
+            if ($checkDate === $isAvailable){
+                return response()->json($meets, 200);
+            }
+        }
+        return dd('no meets found');
     }
 }

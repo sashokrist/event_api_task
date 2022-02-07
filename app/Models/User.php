@@ -50,4 +50,9 @@ class User extends Authenticatable
 
         return $this->api_token;
     }
+
+    public function meet()
+    {
+        return $this->hasMany(Meet::class, 'user_id');
+    }
 }
