@@ -15,8 +15,9 @@ A meeting consists of:
 - add basic authentication
 - add update and delete meeting methods - DONE
 - Unit test DONE
+![img_10.png](img_10.png)
 - use Swagger for specification - DONE
-- ![img_9.png](img_9.png)
+ ![img_9.png](img_9.png)
 - to generate documentation: php artisan l5-swagger:generate to run: http://127.0.0.1:8000/api/documentation
 
 
@@ -52,6 +53,5 @@ Open project on localhost:8000
 
 Unit test -  php artisan test --testsuite=Feature
 
-![img_10.png](img_10.png)
 
 http://127.0.0.1:8000/api/register ![img.png](img.png) http://127.0.0.1:8000/api/login ![img_1.png](img_1.png) http://127.0.0.1:8000/api/meets ![img_2.png](img_2.png) http://127.0.0.1:8000/api/meet/1 ![img_3.png](img_3.png) http://127.0.0.1:8000/api/meet/1 ![img_4.png](img_4.png) http://127.0.0.1:8000/api/meet/1 ![img_5.png](img_5.png) http://127.0.0.1:8000/api/meets-user ![img_6.png](img_6.png)
