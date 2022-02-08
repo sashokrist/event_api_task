@@ -13,11 +13,12 @@ A meeting consists of:
 - list all meetings an user (owner) has ever had - DONE
 - create new meeting - DONE
 - add basic authentication
+- add update and delete meeting methods - DONE
+- Unit test DONE
 - use Swagger for specification - DONE
 - ![img_9.png](img_9.png)
 - to generate documentation: php artisan l5-swagger:generate to run: http://127.0.0.1:8000/api/documentation
-- add update and delete meeting methods - DONE
-- Unit test
+
 
 How to run it?
 
