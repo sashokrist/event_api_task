@@ -38,6 +38,10 @@ class MeetController extends Controller
      */
     public function index()
     {
+        $meet = Meet::with('room')->get();
+        if($meet->isEmpty()){
+            dd('no records found, please create a meet');
+        }
         return Meet::with('room')->get();
     }
 
@@ -139,9 +143,9 @@ class MeetController extends Controller
             if ($start <= $timeToRecerve && $timeToRecerve <= $end && $m_date === $meet_date) {
                 dd('this time is occupied, please select another time');
             }
-
-            $meet = Meet::create($request->all());
         }
+
+        $meet = Meet::create($request->all());
 
         $room = new Room();
         $room->meet_id = $meet->id;
