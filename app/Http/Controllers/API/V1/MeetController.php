@@ -40,7 +40,8 @@ class MeetController extends Controller
     {
         $meet = Meet::with('room')->get();
         if($meet->isEmpty()){
-            dd('no records found, please create a meet');
+            return response()->json('no records found, please create a meet', '422');
+          //  dd('no records found, please create a meet');
         }
         return Meet::with('room')->get();
     }
@@ -141,7 +142,7 @@ class MeetController extends Controller
             $start = $item->start;
             $end = $item->end;
             if ($start <= $timeToRecerve && $timeToRecerve <= $end && $m_date === $meet_date) {
-                dd('this time is occupied, please select another time');
+                return response()->json('this time is occupied, please select another time', '422');
             }
         }
 
@@ -267,7 +268,7 @@ class MeetController extends Controller
             $start = $item->start;
             $end = $item->end;
             if ($start <= $timeToRecerve && $timeToRecerve <= $end && $m_date === $meet_date) {
-                dd('this time is occupied, please select another time');
+                return response()->json('this time is occupied, please select another time', '422');
             }
         }
         $meet->update($request->all());
@@ -337,7 +338,7 @@ class MeetController extends Controller
         $meets = User::with('meet')->where('id', 1)->get();
         foreach($meets as $item){
             if($item->meet->isEmpty()){
-                dd('no records found');
+                return response()->json('no records found', '422');
             }
         }
 
@@ -382,7 +383,7 @@ class MeetController extends Controller
                 return response()->json($meets, 200);
             }
         }
-        return dd('no meets found');
+        return response()->json('no records found', '422');
     }
 
 }
