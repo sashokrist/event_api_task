@@ -59,4 +59,8 @@ How to run it?
 
 Open project on localhost:8000
 
+Unit test -  php artisan test --testsuite=Feature
+
+![img_10.png](img_10.png)
+
 http://127.0.0.1:8000/api/register ![img.png](img.png) http://127.0.0.1:8000/api/login ![img_1.png](img_1.png) http://127.0.0.1:8000/api/meets ![img_2.png](img_2.png) http://127.0.0.1:8000/api/meet/1 ![img_3.png](img_3.png) http://127.0.0.1:8000/api/meet/1 ![img_4.png](img_4.png) http://127.0.0.1:8000/api/meet/1 ![img_5.png](img_5.png) http://127.0.0.1:8000/api/meets-user ![img_6.png](img_6.png)

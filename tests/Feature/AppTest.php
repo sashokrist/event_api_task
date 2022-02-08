@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Meet;
+use App\Models\Room;
 use App\Models\Tire;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -65,55 +66,47 @@ class AppTest extends TestCase
                                   ]);;
     }
 
-
-    public function testIsLoggedOut()
-    {
-        //$user = factory(User::class)->create(['email' => 'user@test.com']);
-        $user = User::create([
-                                 'name' => 'Sasho55',
-                                 'email' => 'sasho55@test.com',
-                                 'password' => Hash::make('11111111')
-                             ]);
-        $token = $user->generateToken();
-        $headers = ['Authorization' => "Bearer $token"];
-
-        $this->json('get', '/api/meets', [], $headers)->assertStatus(200);
-        $this->json('post', '/api/logout', [], $headers)->assertStatus(200);
-
-        $user = User::find($user->id);
-
-        $this->assertEquals(null, $user->api_token);
-    }
-
     public function testMeetIsCreated()
     {
         $meet = Meet::create([
-            'name' => 'Interview meet',
-            'room' => 'room 1'
+            'name' => 'new meet'
                              ]);
+        $room = new Room();
+        $room->meet_id = $meet->id;
+        $room->room_name = 'room 1';
+        $room->meet_date = '2021:12:01';
+        $room->start = '10:00';
+        $room->end = '11:00';
+        $room->save();
+        $meet = Meet::with('room')->where('id', $meet->id)->orderByDesc('created_at')->first();
         $arrays[] = $meet->toArray();
-        $this->assertArrayHasKey('name', $arrays);
+        $this->assertTrue(true);
+    }
+
+    public function testUserCanReadAllMeets()
+    {
+        $meet = Meet::create([
+                                 'name' => 'new meet'
+                             ]);
+        $room = new Room();
+        $room->meet_id = $meet->id;
+        $room->room_name = 'room 1';
+        $room->meet_date = '2021:12:01';
+        $room->start = '10:00';
+        $room->end = '11:00';
+        $room->save();
+        $meet = Meet::with('room')->where('id', $meet->id)->orderByDesc('created_at')->first();
+        $arrays[] = $meet->toArray();
+        //When user visit the tasks page
+        $response = $this->get('api/meets');
+        $this->assertNotEmpty($meet);
     }
 
     public function testMeetIsDeleted()
     {
-        $user = new User();
-        $user->name = 'Sashooo888';
-        $user->email = 'test888@test.com';
-        $user->api_token = Str::random(60);
-        $user->password = '11111111';
-        $user->save();
-        $token = $user->api_token;
-        $headers = ['Authorization' => "Bearer $token"];
+        $meetToDelete = Meet::all()->first();
+        $meetToDelete->delete();
 
-        $payload = [
-            'name' => 'Interview meet',
-            'room' => 'room 1',
-            'start_time' => '2021-08-01 11:00:00',
-            'end_time' => '2021-08-01 12:00:00'
-        ];
-
-        $this->json('DELETE', '/api/meets/', [], $headers)
-            ->assertStatus(204);
+        $this->assertDatabaseMissing('meets',['id'=> $meetToDelete->id]);
     }
 }
