@@ -1,4 +1,4 @@
-# REST API to serve/edit calendar events
+# REST API to serve/edit/delete calendar events
 
 The purpose of this component is to enable web based clients to manage calendar events (aka meetings).
 
