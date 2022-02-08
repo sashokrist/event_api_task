@@ -8,16 +8,11 @@ A meeting consists of:
 - end time - DONE
 - name - DONE
 - meeting room - DONE
-
-Two meetings can't be placed in the same room at the same time. - DONE
-
-The API should allow for:
+- Two meetings can't be placed in the same room at the same time. - DONE
 - list all meetings an user (owner) has for a particular day- DONE
 - list all meetings an user (owner) has ever had - DONE
 - create new meeting - DONE
-- 
-Bonus points:
-- add basic authentication - Basic auth is implemented, api_token is added to Users table, overwrite RegistersUsers.php/registered() and AuthenticatesUsers.php/ login(), created function in User.php/generateToken(), unfortunately it does not work user is always unauthenticated.
+- add basic authentication
 - use Swagger for specification - DONE
 - ![img_9.png](img_9.png)
 - to generate documentation: php artisan l5-swagger:generate to run: http://127.0.0.1:8000/api/documentation
