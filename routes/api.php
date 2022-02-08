@@ -17,20 +17,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/*Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-});*/
+});
 
-Route::middleware('auth:api')
+/*Route::middleware('auth:api')
     ->get('/user', function (Request $request) {
         return $request->user();
-    });
+    });*/
 
 Route::post('register', [RegisterController::class, 'register']);
 Route::post('login', [LoginController::class, 'login']);
 Route::post('logout', [LoginController::class, 'logout']);
 
-//Route::group(['middleware' => 'auth:api'], function() {
+//Route::group(['middleware' => 'auth:sanctum'], function() {
 Route::get('meets', [MeetController::class, 'index'])->name('meets');
 Route::post('meet', [MeetController::class, 'store']);
 Route::post('meet/{meet}', [MeetController::class, 'update']);

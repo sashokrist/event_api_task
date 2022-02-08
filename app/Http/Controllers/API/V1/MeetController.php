@@ -41,7 +41,6 @@ class MeetController extends Controller
         $meet = Meet::with('room')->get();
         if($meet->isEmpty()){
             return response()->json('no records found, please create a meet', '422');
-          //  dd('no records found, please create a meet');
         }
         return Meet::with('room')->get();
     }
@@ -312,7 +311,7 @@ class MeetController extends Controller
     public function delete(Meet $meet)
     {
         $meet->delete();
-        return response()->json(null, 204);
+        return response()->json('meet was deleted', 204);
     }
 
     /**
