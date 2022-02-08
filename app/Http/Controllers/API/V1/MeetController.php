@@ -335,6 +335,12 @@ class MeetController extends Controller
     public function userMeets()
     {
         $meets = User::with('meet')->where('id', 1)->get();
+        foreach($meets as $item){
+            if($item->meet->isEmpty()){
+                dd('no records found');
+            }
+        }
+
         return response()->json($meets, 200);
     }
 
@@ -378,4 +384,5 @@ class MeetController extends Controller
         }
         return dd('no meets found');
     }
+
 }
