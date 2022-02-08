@@ -15,19 +15,13 @@ The API should allow for:
 - list all meetings an user (owner) has for a particular day- DONE
 - list all meetings an user (owner) has ever had - DONE
 - create new meeting - DONE
-
-The API specification is for the candidate to decide but it should follow the REST architectural style. Please provide basic documentation of it so we can test. Please provide steps to run or deploy it on the internet.
-The implementation should be done with PHP and the Laravel framework.
-
-For simplicity you could assume there is only one meeting owner (user).
-
+- 
 Bonus points:
 - add basic authentication - Basic auth is implemented, api_token is added to Users table, overwrite RegistersUsers.php/registered() and AuthenticatesUsers.php/ login(), created function in User.php/generateToken(), unfortunately it does not work user is always unauthenticated.
 - use Swagger for specification - DONE
 - ![img_9.png](img_9.png)
 - to generate documentation: php artisan l5-swagger:generate to run: http://127.0.0.1:8000/api/documentation
 - add update and delete meeting methods - DONE
-
 
 How to run it?
 
