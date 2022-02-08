@@ -12,7 +12,7 @@ A meeting consists of:
 Two meetings can't be placed in the same room at the same time. - DONE
 
 The API should allow for:
-- list all meetings an user (owner) has for a particular day
+- list all meetings an user (owner) has for a particular day- DONE
 - list all meetings an user (owner) has ever had - DONE
 - create new meeting - DONE
 
